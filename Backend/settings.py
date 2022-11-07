@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'shop',
-     'django_json_widget',
+    'django_json_widget',
+    'Address'
+    
 ]
 
 MIDDLEWARE = [
