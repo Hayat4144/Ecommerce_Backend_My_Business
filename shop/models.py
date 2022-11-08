@@ -5,8 +5,7 @@ from django.utils.html import escape
 # Create your models here.
 from django.core.exceptions import ValidationError
 #from .serializers import VarientsSerializer 
-
-
+from cloudinary.models import CloudinaryField
 
 def validation_html(value):
     return escape(value)
@@ -19,7 +18,7 @@ class Product(models.Model):
     descriptions = models.CharField(validators=[validation_html],max_length=100)
     limited = models.BooleanField(validators=[validation_html],default =False)
     regular_price = models.IntegerField(validators=[validation_html], blank=False)
-    image = models.ImageField(blank=False,upload_to='upload/image')
+    image = CloudinaryField('image',folder='Ecommerce/product')
     categories = models.ForeignKey('Category', related_name="cate", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, help_text="Please use the following format: <em>YYYY-MM-DD</em>.")
     updated_at = models.DateTimeField(auto_now=True, blank=True, help_text="Please use the following format: <em>YYYY-MM-DD</em>.")
