@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,8 +28,12 @@ SECRET_KEY = 'django-insecure-47og!8c_5-_bgki8d%-3y*2192**!he&uxt)vs%0co5s00v$7@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-CORS_ORIGIN_ALLOW_ALL = True
+# ALLOWED_HOSTS = ['http://localhost:3000']
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://192.168.43.5:3000",
+]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -47,7 +52,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'shop',
     'django_json_widget',
-    'Address'
+    'Address',
+    'cloudinary',
+    'cloudinary_storage',
     
 ]
 
@@ -188,3 +195,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.User'
+
+CLOUDINARY_URL='cloudinary://872448331846423:hHrZ7gUzI1uCuzIadJRRXm4pW_o@dwwequxd2'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+cloudinary.config( 
+  cloud_name = "dwwequxd2", 
+  api_key = "872448331846423", 
+  api_secret = "hHrZ7gUzI1uCuzIadJRRXm4pW_o",
+  secure = True
+)
+
+import cloudinary.uploader
+import cloudinary.api
