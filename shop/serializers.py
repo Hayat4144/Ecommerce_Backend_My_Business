@@ -17,3 +17,7 @@ class ProductSerializerByCategory(serializers.ModelSerializer):
         fields = ('id','name','descriptions','regular_price','sales_price','image','available_colors')
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model =Category
+        fields = ('id','name')
