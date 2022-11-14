@@ -2,9 +2,7 @@
 from django.db import models
 import uuid
 from django.utils.html import escape
-# Create your models here.
 from django.core.exceptions import ValidationError
-#from .serializers import VarientsSerializer 
 from cloudinary.models import CloudinaryField
 
 def validation_html(value):
