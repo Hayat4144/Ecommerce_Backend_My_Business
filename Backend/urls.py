@@ -22,6 +22,7 @@ from .views import MyTokenObtainPairView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('account.urls')),
+    path('stock/',include('Stocks.urls')),
     path('address/',include('Address.urls')),
     path('product/',include('shop.urls')),
     path('api/token/signin/', MyTokenObtainPairView.as_view(),
