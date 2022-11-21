@@ -78,7 +78,6 @@ class Produt_item(models.Model):
     colour_id = models.ForeignKey(colour, on_delete = models.CASCADE)
     material_id = models.ForeignKey(material, on_delete = models.CASCADE)
     sku = models.CharField(max_length = 250)
-    stock = models.IntegerField()
     price = models.IntegerField()
 
     def __str__(self):
