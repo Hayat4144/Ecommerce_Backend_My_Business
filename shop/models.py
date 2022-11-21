@@ -4,6 +4,8 @@ import uuid
 from django.utils.html import escape
 from django.core.exceptions import ValidationError
 from cloudinary.models import CloudinaryField
+from account.models import User 
+from django.core.validators import MaxValueValidator, MinValueValidator 
 
 def validation_html(value):
     return escape(value)
@@ -79,7 +81,27 @@ class Produt_item(models.Model):
     stock = models.IntegerField()
     price = models.IntegerField()
 
-
     def __str__(self):
         return self.product_id.name 
 
+class shopping_cart(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return self.user.full_name
+        
+    def get_cart_id(self):
+        return self.id
+
+class shopping_cart_item(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,primary_key=True,editable=False)
+    cart = models.ForeignKey(shopping_cart,on_delete=models.CASCADE)
+    product_item = models.ForeignKey(Produt_item,on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default = 10,validators=[MinValueValidator(10),MaxValueValidator(200)])
+
+    def __str__(self):
+        return self.product_item.product_id.name 
+    
+    def total_price_of_product_item(self):
+        return self.product_item.price * self.quantity
