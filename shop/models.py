@@ -104,3 +104,23 @@ class shopping_cart_item(models.Model):
     
     def total_price_of_product_item(self):
         return self.product_item.price * self.quantity
+
+
+class Whishlist(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return self.user.full_name
+        
+    def get_cart_id(self):
+        return self.id
+
+
+class Whishlist_item(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False)
+    whishlist = models.ForeignKey(Whishlist,on_delete=models.CASCADE)
+    product_item = models.ForeignKey(Produt_item,on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.product_item.product_id.name
