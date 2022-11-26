@@ -58,24 +58,24 @@ def Signin(request):
 
 # forget password view
 @api_view(['POST'])
-def ForgetPassword(request):
+def ChangePassword(request):
     # forger password code 
     if request.method == 'POST':
         recieved_data = json.loads(request.body)
         new_password = recieved_data['new_password']
-        old_password = recieved_data['password']
+        password = recieved_data['password']
         serializer = ForgetPasswordSerializer(data =recieved_data)
         if serializer.is_valid():
             serializer.validatepassword()
             token = request.headers.get('Authorization')
             decode_token = jwt.decode(token.split()[1],SECRET_KEY,algorithms=['HS256'])['user_id']
             user  = User.objects.get(id=decode_token)
-            correct_password = user.check_password(old_password)
+            correct_password = user.check_password(password)
             print(correct_password)
             if correct_password:
                 user.set_password(new_password)
                 user.save()
-                return Response({'data':'password has been changed successfully.'}, status=status.HTTP_200_OK)
+                return Response({'data':'Password has been changed successfully.'}, status=status.HTTP_200_OK)
             else:
                 return Response({'error':'Sorry Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
         else:
