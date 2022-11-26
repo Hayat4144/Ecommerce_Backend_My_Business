@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from .models import Product ,Category,size,colour,material, Produt_item ,shopping_cart,shopping_cart_item
+from .models import Varients,Product ,Category,size,colour,material, Produt_item ,shopping_cart,shopping_cart_item, Whishlist ,Whishlist_item
 
 class CustomProductAmdin(admin.ModelAdmin):
     model = Product
@@ -42,8 +42,23 @@ class Shopping_Cart_itemAdmin(admin.ModelAdmin):
     list_display = ('cart','product_item','quantity')
     list_filter = ('product_item','cart')
 
+class Whishlist_Admin(admin.ModelAdmin):
+    class Meta:
+        model =Whishlist
+        list_display=('user',)
+        list_filter=('user',)
+
+class Whishlist_item_Admin(admin.ModelAdmin):
+    class Meta:
+        models = Whishlist_item
+        list_display= ('whishlist','product_item')
+        list_filter= ('whish_list','product_item')
+
+admin.site.register(Whishlist_item,Whishlist_item_Admin)
+admin.site.register(Whishlist,Whishlist_Admin)
 admin.site.register(Produt_item,Product_itemAdmin)
 admin.site.register(Product,CustomProductAmdin)
+admin.site.register(Varients)
 admin.site.register(Category,CustomeCategoryAdmin)
 admin.site.register(size,SizeAdmin)
 admin.site.register(colour,ColourAdmin)
