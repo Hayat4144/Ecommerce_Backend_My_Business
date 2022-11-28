@@ -1,5 +1,5 @@
 import jwt
-from Backend.settings import SECRET_KEY
+from .settings import SECRET_KEY
 
 def decode_token(token):
     UserId = jwt.decode(token.split()[1],SECRET_KEY,algorithms=['HS256'])['user_id']
