@@ -55,7 +55,9 @@ INSTALLED_APPS = [
     'Address',
     'cloudinary',
     'cloudinary_storage',
-    'Stocks'
+    'Stocks',
+    'Cart',
+    'Whishlist',
     
 ]
 
