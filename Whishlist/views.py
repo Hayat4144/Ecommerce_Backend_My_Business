@@ -59,6 +59,8 @@ def get_all_wishlistItem(request):
         return JsonResponse({"error": f"The {request.method} method is not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
+
+
 # delete whishlistItem
 def delete_wishlistItem(request):
     if request.method == 'DELETE':
