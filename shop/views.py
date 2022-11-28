@@ -11,7 +11,7 @@ from account.models import User
 import jwt
 from Backend.settings import SECRET_KEY
 import json
-from .DecodeToken import decode_token
+from ..Backend.DecodeToken import decode_token
 
 # Create your views here.
 
