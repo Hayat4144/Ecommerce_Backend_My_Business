@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from .models import Category, Product, Produt_item, shopping_cart, shopping_cart_item
+from .models import Category, Product, Product_item
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -33,18 +33,30 @@ class ProductItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product_id')
 
     class Meta:
-        model = Produt_item
+        model = Product_item
         fields = ('id', 'sku', 'price', 'size_name',
                   'colour_name', 'material_name', 'product_name')
 
 
-class CartSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = shopping_cart
-        fields = "__all__"
+# class CartSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = shopping_cart
+#         fields = "__all__"
 
 
-class CartItemSerialzer(serializers.ModelSerializer):
-    class Meta:
-        model = shopping_cart_item
-        fields = "__all__"
+# class CartItemSerialzer(serializers.ModelSerializer):
+#     class Meta:
+#         model = shopping_cart_item
+#         fields = "__all__"
+
+# class WhislistSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Whishlist
+#         fields = "__all__"
+
+# class WishListItemsSeriailizer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Whishlist_item
+#         fields = "__all__"
+
+        

@@ -71,7 +71,7 @@ class colour(models.Model):
         return self.value
 
 
-class Produt_item(models.Model):
+class Product_item(models.Model):
     id = models.UUIDField(default = uuid.uuid4, primary_key = True, editable = False)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     size_id = models.ForeignKey(size,on_delete = models.CASCADE)
@@ -83,44 +83,44 @@ class Produt_item(models.Model):
     def __str__(self):
         return self.product_id.name 
 
-class shopping_cart(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+# class shopping_cart(models.Model):
+#     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
-    def __str__(self) -> str:
-        return self.user.full_name
+#     def __str__(self) -> str:
+#         return self.user.full_name
         
-    def get_cart_id(self):
-        return self.id
+#     def get_cart_id(self):
+#         return self.id
 
-class shopping_cart_item(models.Model):
-    id = models.UUIDField(default=uuid.uuid4,primary_key=True,editable=False)
-    cart = models.ForeignKey(shopping_cart,on_delete=models.CASCADE)
-    product_item = models.ForeignKey(Produt_item,on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default = 10,validators=[MinValueValidator(10),MaxValueValidator(200)])
+# class shopping_cart_item(models.Model):
+#     id = models.UUIDField(default=uuid.uuid4,primary_key=True,editable=False)
+#     # cart = models.ForeignKey(shopping_cart,on_delete=models.CASCADE)
+#     product_item = models.ForeignKey(Product_item,on_delete=models.CASCADE)
+#     quantity = models.PositiveIntegerField(default = 10,validators=[MinValueValidator(10),MaxValueValidator(200)])
 
-    def __str__(self):
-        return self.product_item.product_id.name 
+#     def __str__(self):
+#         return self.product_item.product_id.name 
     
-    def total_price_of_product_item(self):
-        return self.product_item.price * self.quantity
+#     def total_price_of_product_item(self):
+#         return self.product_item.price * self.quantity
 
 
-class Whishlist(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+# class Whishlist(models.Model):
+#     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
-    def __str__(self) -> str:
-        return self.user.full_name
+#     def __str__(self) -> str:
+#         return self.user.full_name
         
-    def get_cart_id(self):
-        return self.id
+#     def get_whishlist_id(self):
+#         return self.id
 
 
-class Whishlist_item(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False)
-    whishlist = models.ForeignKey(Whishlist,on_delete=models.CASCADE)
-    product_item = models.ForeignKey(Produt_item,on_delete=models.CASCADE)
+# class Whishlist_item(models.Model):
+#     id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False)
+#     whishlist = models.ForeignKey(Whishlist,on_delete=models.CASCADE)
+#     product_item = models.ForeignKey(Product_item,on_delete=models.CASCADE)
 
-    def __str__(self) -> str:
-        return self.product_item.product_id.name
+#     def __str__(self) -> str:
+#         return self.product_item.product_id.name
