@@ -19,14 +19,16 @@ def add_to_cart(request):
         jwt_token = request.headers.get('Authorization')
         UserId = decode_token(jwt_token)
         # check is user valid or not if not throw error
-        CheckUserValid = User.objects.filter(id=UserId, is_active=True).values()[0]['id']
+        CheckUserValid = User.objects.filter(
+            id=UserId, is_active=True).values()[0]['id']
         if CheckUserValid is None and len(CheckUserValid) < 1:
             return JsonResponse({"error": "Sorry User can't find."})
 
         # fetch user cart if not created create it.
         cart, created = UserCart.objects.get_or_create(user_id=CheckUserValid)
         try:
-            IsProductExist = CartItem.objects.filter(productItem_id=cart_data['product_item_id'])
+            IsProductExist = CartItem.objects.filter(
+                productItem_id=cart_data['product_item_id'])
             if IsProductExist.exists():
                 return JsonResponse({"error": "you have already added this product to your cart."}, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -40,9 +42,56 @@ def add_to_cart(request):
         return JsonResponse({"error": f"{request.method} method is not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
+# get all cart items of particular user
 def get_all_cart_item(request):
-    jwt_token = request.headers.get('Authorization')
-    UserId = decode_token(jwt_token)
-    Cart_data = CartItem.objects.filter(cart__user=UserId)
-    serializer = CartItemSerialzer(instance=Cart_data,many=True)
-    return JsonResponse(serializer.data, safe=False)
+    if request.method == 'GET':
+        if not request.headers.get('Authorization'):
+            return JsonResponse({"error": "You are unauthorized."}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            jwt_token = request.headers.get('Authorization')
+            UserId = decode_token(jwt_token)
+            Cart_data = CartItem.objects.filter(cart__user=UserId)
+            serializer = CartItemSerialzer(instance=Cart_data, many=True)
+            return JsonResponse(serializer.data, safe=False)
+    else:
+        return JsonResponse({"error": f"The {request.method} method is not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+# delete cart Item
+def delete_cart_item(request):
+    if request.method == 'DELETE':
+        if not request.headers.get('Authorization'):
+            return JsonResponse({"error": "You are unauthorized."}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            jwt_token = request.headers.get('Authorization')
+            CartItemId = json.loads(request.body)
+            if CartItem.objects.filter(id=CartItemId['cart_id']).exists():
+                UserId = decode_token(jwt_token)
+                delete_cartItem = CartItem.objects.filter(
+                    cart__user=UserId, id=CartItemId['cart_id'])
+                delete_cartItem.delete()
+                return JsonResponse({"data": "The Cart item has been deleted."}, safe=False)
+            else:
+                return JsonResponse({"error": "The Product doesn't exist."}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return JsonResponse({"error": f"The {request.method} method is not allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+
+# Updata the cart Item
+def update_cart_item(request):
+    if request.method == 'PUT':
+        if not request.headers.get('Authorization'):
+            return JsonResponse({"error": "You are unauthorized."}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            jwt_token = request.headers.get('Authorization')
+            CartItem_data = json.loads(request.body)
+            if CartItem.objects.filter(id=CartItem_data['cart_id']).exists():
+                UserId = decode_token(jwt_token)
+                update_cartItem = CartItem.objects.filter(
+                    cart__user=UserId).update(quantity=CartItem_data['quantity'])
+                return JsonResponse({"data": f"Your cart item has been updated successfully."}, safe=False)
+            else:
+                return JsonResponse({"error": "The Product doesn't exist."}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return JsonResponse({"error": f"The {request.method} method is not allowed."})
