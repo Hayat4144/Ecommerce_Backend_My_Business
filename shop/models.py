@@ -39,88 +39,30 @@ class Category(models.Model):
         return self.name
     
 
-class Varients(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True,validators=[validation_html], editable=False)
-    varients_name = models.CharField(max_length=100,blank=False)
-
-    def __str__(self):
-        return self.varients_name 
-
-
-class size(models.Model):
-    id = models.UUIDField(default= uuid.uuid4, primary_key = True, editable = False)
-    value= models.CharField(max_length=20)
-    
-
-    def __str__(self):
-        return self.value
-
-class material(models.Model):
-    id = models.UUIDField(default = uuid.uuid4, primary_key =True,editable=False)
-    value = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.value
-
-
-class colour(models.Model):
-    id = models.UUIDField(default = uuid.uuid4 ,primary_key = True,editable = False)
-    value = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.value
-
 
 class Product_item(models.Model):
     id = models.UUIDField(default = uuid.uuid4, primary_key = True, editable = False)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    size_id = models.ForeignKey(size,on_delete = models.CASCADE)
-    colour_id = models.ForeignKey(colour, on_delete = models.CASCADE)
-    material_id = models.ForeignKey(material, on_delete = models.CASCADE)
     sku = models.CharField(max_length = 250)
     price = models.IntegerField()
 
     def __str__(self):
         return self.product_id.name 
 
-# class shopping_cart(models.Model):
-#     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class attribute(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,editable=False,primary_key=True)
+    attribute_name = models.CharField(max_length=50 ,null=False)
+    attribute_value = models.CharField(max_length=50 , null=False, default="")
+
+    def __str__(self):
+        return self.attribute_value
+
+
+class product_attribute(models.Model):
+    id = models.UUIDField(default = uuid.uuid4, editable =False, primary_key = True)
+    attribute =models.ForeignKey(attribute , on_delete = models.CASCADE )
+    productItem = models.ForeignKey(Product_item, on_delete = models.CASCADE)
     
-#     def __str__(self) -> str:
-#         return self.user.full_name
-        
-#     def get_cart_id(self):
-#         return self.id
-
-# class shopping_cart_item(models.Model):
-#     id = models.UUIDField(default=uuid.uuid4,primary_key=True,editable=False)
-#     # cart = models.ForeignKey(shopping_cart,on_delete=models.CASCADE)
-#     product_item = models.ForeignKey(Product_item,on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField(default = 10,validators=[MinValueValidator(10),MaxValueValidator(200)])
-
-#     def __str__(self):
-#         return self.product_item.product_id.name 
-    
-#     def total_price_of_product_item(self):
-#         return self.product_item.price * self.quantity
-
-
-# class Whishlist(models.Model):
-#     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    
-#     def __str__(self) -> str:
-#         return self.user.full_name
-        
-#     def get_whishlist_id(self):
-#         return self.id
-
-
-# class Whishlist_item(models.Model):
-#     id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False)
-#     whishlist = models.ForeignKey(Whishlist,on_delete=models.CASCADE)
-#     product_item = models.ForeignKey(Product_item,on_delete=models.CASCADE)
-
-#     def __str__(self) -> str:
-#         return self.product_item.product_id.name
+    def __str__(self):
+        return self.productItem.product_id.name

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import User
+from .models import User ,Token
 
 
 class CustomUserAdmin(UserAdmin):
@@ -25,4 +25,10 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+class TokenAdmin(admin.ModelAdmin):
+    model = Token
+    list_display= ('user','token_value')
+    list_filter = ('user',)
+
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Token,TokenAdmin)

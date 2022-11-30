@@ -6,6 +6,7 @@ import uuid
 from .managers import CustomUserManager
 
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     id   = models.UUIDField(primary_key =True,default=uuid.uuid4,unique=True, editable = False)
     email = models.EmailField(unique=True)
@@ -39,3 +40,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     
 
+class Token(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,primary_key=True,editable=False)
+    user= models.ForeignKey(User,on_delete=models.CASCADE)
+    token_value = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.user.full_name

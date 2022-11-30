@@ -1,9 +1,9 @@
 # from django.shortcuts import render
 from itertools import product
 from rest_framework.decorators import api_view
-from .models import Category, Product, Product_item
+from .models import Category, Product, Product_item ,product_attribute
 from rest_framework.response import Response
-from .serializers import ProductSerializer, ProductSerializerByCategory, CategorySerializer, ProductItemSerializer
+from .serializers import ProductSerializer, ProductSerializerByCategory, CategorySerializer, ProductItemSerializer ,Product_attribute_Serializer 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from django.http import JsonResponse
@@ -57,52 +57,10 @@ def get_product_details(request, id):
     serialzer = ProductItemSerializer(instance=product_item_data, many=True)
     return Response(serialzer.data)
 
-
-# @api_view(['POST'])
-# def add_to_cart(request):
-#     render_classess = [JSONRenderer]
-#     token = request.headers.get('Authorization')
-#     cart_data = json.loads(request.body)
-#     UserId = jwt.decode(token.split()[1], SECRET_KEY, algorithms=['HS256'])['user_id']
-#     checkUserValid = User.objects.filter(id=UserId).values()[0]['id']
-#     if checkUserValid is None:
-#         return Response({"error": "Invalid UUID"})
-
-#     # fetch cart data if not created create it.
-#     cart, created = shopping_cart.objects.get_or_create(user_id=checkUserValid)
-#     # add product item to cart
-#     # print(cart.id)
-#     # CartItem = shopping_cart_item.objects.create(cart_id=cart.id,quantity=cart_data['quantity'],product_item_id=cart_data['product_item_id'])
-#     print(cart_data['product_item_id'])
-#     CartItem = shopping_cart_item.objects.create(product_item_id=cart_data['product_item_id'],quantity=cart_data['quantity'])
-#     print(CartItem)
-#     return JsonResponse({'data':f"The {CartItem} has been added successfully."})
-
-# @api_view(['GET'])
-# def get_cart_item(request):
-#     render_classesss = [JSONRenderer]
-#     token = request.headers.get('Authorization')
-#     UserId = jwt.decode(token.split()[1],SECRET_KEY,algorithms=['HS256'])['user_id']
-#     Cart_data = shopping_cart_item.objects.filter(cart__user=UserId)
-#     print(Cart_data)
-#     serializer = CartItemSerialzer(instance=Cart_data,many=True)
-#     print(serializer.data)
-#     return Response(serializer.data)
-
-
-# @api_view(["POST"])
-# def add_to_whishlist(request):
-#     render_classess = [JSONRenderer]
-#     whishlist_data = json.loads(request.body)
-#     print(whishlist_data['product_item_id'])
-#     token = request.headers.get('Authorization')
-#     UserId = decode_token(token)
-#     CheckValidUser = User.objects.filter(id=UserId).values()[0]['id']
-#     if CheckValidUser is  None:
-#         return JsonResponse({"error":"Usedr doesn't exist."})
-#     whishlist,created = Whishlist.objects.get_or_create(user_id=UserId)
-#     print(whishlist.get_whishlist_id())
-#     print('hello')
-#     return Response('hello')
-#     # WhishlistItem = Whishlist_item.objects.create(whishlist_id=whishlist.get_whishlist_id(),product_item_id=whishlist_data['product_item_id'])
-#     # return JsonResponse({"data":f"The {WhishlistItem} has been added to Wishlist Successfully."})
+@api_view(["POST"])
+def productitem_attribute(request):
+    renderer_classes = [JSONRenderer]
+    client_data = json.loads(request.body)
+    data = product_attribute.objects.filter(productItem__product_id=client_data['product_id'])
+    serializer = Product_attribute_Serializer(instance=data ,many=True)
+    return Response(serializer.data)
